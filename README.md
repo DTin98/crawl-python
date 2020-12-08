@@ -17,6 +17,6 @@
 
 # Code
 
-git clone https://github.com/DTin98/crawl-python.git && cd crawl-python && python3 crawl.py <<BOX>> <<CATEGORY>>
+git clone https://github.com/DTin98/crawl-python.git && cd crawl-python && python3 crawl.py BOX CATEGORY
 
 vd: git clone https://github.com/DTin98/crawl-python.git && cd crawl-python && python3 crawl.py 8 12
