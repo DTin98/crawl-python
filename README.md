@@ -26,10 +26,10 @@ git clone https://github.com/DTin98/crawl-python.git && cd crawl-python
 `screen python3 crawl.py BOX CATEGORY`
 Then Hold Ctrl and press a and press d
 
-screen commands:
-list out the screen is running background:
-`screen -ls`
-attach to screen you want:
-`screen -r ID`
-detach screen:
-Hold Ctrl press a and press d
+## screen commands:
+list out the screen is running background:<br/>
+`screen -ls`<br/>
+attach to screen you want:<br/>
+`screen -r ID`<br/>
+detach screen:<br/>
+Hold Ctrl press a and press d<br/>
