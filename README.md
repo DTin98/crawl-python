@@ -20,7 +20,16 @@
 git clone https://github.com/DTin98/crawl-python.git && cd crawl-python
 
 ## Run
+- Windowns:
+`python3 crawl.py BOX CATEGORY`
+- Ubuntu:
+`screen python3 crawl.py BOX CATEGORY`
+Then Hold Ctrl and press a and press d
 
-python3 crawl.py BOX CATEGORY
-
-vd: git clone https://github.com/DTin98/crawl-python.git && cd crawl-python && python3 crawl.py 8 12
+## screen commands:
+list out the screen is running background:<br/>
+`screen -ls`<br/>
+attach to screen you want:<br/>
+`screen -r ID`<br/>
+detach screen:<br/>
+Hold Ctrl press a and press d<br/>
