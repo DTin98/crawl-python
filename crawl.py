@@ -4,14 +4,14 @@
 import requests
 import json
 import multiprocessing
-from multiprocessing import Pool, TimeoutError
-import time
+import ast
+import sys
 
 manager = multiprocessing.Manager()
 percent = manager.list()
 
 
-def CrawlData(process_id, category, x1, y1, x2, y2, filename):
+def Crawljson_x(process_id, category, x1, y1, x2, y2, filename):
 
     #                      (x2,y2)
     #     ********************X
@@ -39,34 +39,50 @@ def CrawlData(process_id, category, x1, y1, x2, y2, filename):
     times = 0
     total_times = ((y2-y1)/DISTANT_ELEMENT_Y)*((x2-x1)/DISTANT_ELEMENT_X)
 
-    while e['y1'] <= y2:
-        while e['x1'] <= x2:
-            response = None
-            try:
-                response = requests.get(
-                    f"https://map.coccoc.com/map/search.json?category={category}&borders={e['y1']},{e['x1']},{e['y2']},{e['x2']}")  # REMEMBER TO REVERT X & Y
-            except requests.exceptions.RequestException as err:
-                print(err)
+    # continue running by logger
+    try:
+        with open(f'log/{filename}_{process_id}.log', 'r') as f:
+            data = f.read()
+            json_x = ast.literal_eval(data)
+            e = json_x['e']
+            times = json_x['times']
+    except IOError:
+        pass
 
-            if response.text[18] != ']':
-                with open(filename, 'a') as f:
-                    s = json.loads(response.text)['result']['poi']
-                    f.write(json.dumps(s) + ',')
+    if (times < total_times):
+        while e['y1'] <= y2:
+            while e['x1'] <= x2:
+                response = None
+                try:
+                    response = requests.get(
+                        f"https://map.coccoc.com/map/search.json?category={category}&borders={e['y1']},{e['x1']},{e['y2']},{e['x2']}")  # REMEMBER TO REVERT X & Y
+                except requests.exceptions.RequestException as err:
+                    print(err)
 
-            # increase x
-            e['x1'] = e['x2']
-            e['x2'] = e['x2'] + DISTANT_ELEMENT_X
+                if response.text[18] != ']':
+                    with open(filename, 'a') as f:
+                        s = json.loads(response.text)['result']['poi']
+                        f.write(json.dumps(s) + ',')
 
-            # log:
-            times = times + 1
-            percent[process_id] = times*100/total_times
-            # print(f'percent: {times*100/total_times}', end='\r')
+                # logfile
+                with open(f'log/{filename}_{process_id}.log', 'w') as f:
+                    f.write(str({'e': e, 'times': times, 'total_time': total_times,
+                                 'percent': times*100/total_times}))
 
-        # reset x, increase y
-        e['x1'] = x1
-        e['x2'] = x1 + DISTANT_ELEMENT_X
-        e['y1'] = e['y2']
-        e['y2'] = e['y2'] + DISTANT_ELEMENT_Y
+                # increase x
+                e['x1'] = e['x2']
+                e['x2'] = e['x2'] + DISTANT_ELEMENT_X
+
+                # logconfole:
+                times = times + 1
+                percent[process_id] = times*100/total_times
+                # print(f'percent: {times*100/total_times}', end='\r')
+
+            # reset x, increase y
+            e['x1'] = x1
+            e['x2'] = x1 + DISTANT_ELEMENT_X
+            e['y1'] = e['y2']
+            e['y2'] = e['y2'] + DISTANT_ELEMENT_Y
 
 
 # Divide a square to number of process times to get high performace for crawling
@@ -146,7 +162,7 @@ def ShareWork(box_id, category, number_process):
     jobs = []
     for i in range(0, number_process*number_process):
         percent.append('')
-        p = multiprocessing.Process(target=CrawlData, args=(
+        p = multiprocessing.Process(target=Crawljson_x, args=(
             i, category, e[i]['x1'], e[i]['y1'], e[i]['x2'], e[i]['y2'], f'vn_{box_id+1}_{category}.json'))
         jobs.append(p)
         p.start()
@@ -183,6 +199,7 @@ def ShareWork(box_id, category, number_process):
 
 
 #10.848689129464779, 106.6573182438044, 10.851470907404817, 106.66425980073494
-# CrawlData(0, 12, 106.6573182438044, 10.848689129464779,
+# Crawljson_x(0, 12, 106.6573182438044, 10.848689129464779,
 #           106.66425980073494, 10.851470907404817, 'test.json')
-ShareWork(8, 11, 2)
+
+ShareWork(int(sys.argv[1]), int(sys.argv[2]), 2)
