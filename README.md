@@ -1,15 +1,15 @@
 # Category
 
-1: restaurent<\br>
-2: coffee<\br>
-3: entertaiment <\br>
-4: atm&bank <\br>
-6: hospital <\br>
-7: hotel&travel <\br>
-9: store&supermarket <\br>
-10: services <\br>
-11: places <\br>
-12: education <\br>
+1: restaurent<br/>
+2: coffee<br/>
+3: entertaiment <br/>
+4: atm&bank <br/>
+6: hospital <br/>
+7: hotel&travel <br/>
+9: store&supermarket <br/>
+10: services <br/>
+11: places <br/>
+12: education <br/>
 
 # BOX [1 -> 10]
 
