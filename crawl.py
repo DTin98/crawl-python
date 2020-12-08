@@ -151,9 +151,9 @@ def ShareWork(box_id, category, number_process):
     number_cpu = multiprocessing.cpu_count()
     print(f"You have {number_cpu} core!")
     DISTANT_ELEMENT_X = (
-        finish_frames[box_id][0] - start_frames[box_id][0]) / number_process
-    DISTANT_ELEMENT_Y = (
         finish_frames[box_id][1] - start_frames[box_id][1]) / number_process
+    DISTANT_ELEMENT_Y = (
+        finish_frames[box_id][0] - start_frames[box_id][0]) / number_process
 
     # Init coordinates element
     # element is a small square of the box(x1,y1,x2,y2), it begin at the bot-left and finish at top-right
