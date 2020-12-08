@@ -24,8 +24,7 @@ git clone https://github.com/DTin98/crawl-python.git && cd crawl-python
 python3 crawl.py BOX CATEGORY
 - Ubuntu:
 vd: screen python3 crawl.py 8 12
-
-Hold Ctrl press a and press d
+Then Hold Ctrl and press a and press d
 
 screen commands:
 list out the screen is running background:
