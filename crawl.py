@@ -11,7 +11,7 @@ manager = multiprocessing.Manager()
 percent = manager.list()
 
 
-def Crawljson_x(process_id, category, x1, y1, x2, y2, filename):
+def CrawlJson(process_id, category, x1, y1, x2, y2, filename):
 
     #                      (x2,y2)
     #     ********************X
@@ -62,7 +62,10 @@ def Crawljson_x(process_id, category, x1, y1, x2, y2, filename):
                 if response.text[18] != ']':
                     with open(filename, 'a') as f:
                         s = json.loads(response.text)['result']['poi']
-                        f.write(json.dumps(s) + ',')
+                        if (times + 1 < total_times):
+                            f.write(json.dumps(s) + ',')
+                        else:
+                            f.write(json.dumps(s))
 
                 # logfile
                 with open(f'log/{filename}_{process_id}.log', 'w') as f:
@@ -75,8 +78,8 @@ def Crawljson_x(process_id, category, x1, y1, x2, y2, filename):
 
                 # logconfole:
                 times = times + 1
-                percent[process_id] = times*100/total_times
-                # print(f'percent: {times*100/total_times}', end='\r')
+                # percent[process_id] = times*100/total_times
+                print(f'percent: {times*100/total_times}', end='\r')
 
             # reset x, increase y
             e['x1'] = x1
@@ -131,7 +134,7 @@ def ShareWork(box_id, category, number_process):
         [8.54011246750354, 104.38472296569029],
         [9.953655409883128, 103.82238599003524],
         [0, 0],
-        [10.705989, 106.547082]
+        [10.705989, 106.547082]  # HCM
     ]
     finish_frames = [
         [23.34888793301606, 106.81325109163834],
@@ -145,7 +148,7 @@ def ShareWork(box_id, category, number_process):
         [10.360377311574196, 106.7889765688327],
         [10.54011246750354, 104.23637092200744],
         [3, 3],
-        [10.910806, 106.799978]
+        [10.910806, 106.799978]  # HCM
     ]
 
     number_cpu = multiprocessing.cpu_count()
@@ -160,9 +163,14 @@ def ShareWork(box_id, category, number_process):
     e = [{'x1': start_frames[box_id][1], 'y1': start_frames[box_id]
           [0], 'x2': start_frames[box_id][1] + DISTANT_ELEMENT_X, 'y2': start_frames[box_id][0] + DISTANT_ELEMENT_Y}]
     jobs = []
+
+    #create file
+    with open(f'vn_{box_id+1}_{category}.json', 'a') as f:
+        f.write('[')
+
     for i in range(0, number_process*number_process):
         percent.append('')
-        p = multiprocessing.Process(target=Crawljson_x, args=(
+        p = multiprocessing.Process(target=CrawlJson, args=(
             i, category, e[i]['x1'], e[i]['y1'], e[i]['x2'], e[i]['y2'], f'vn_{box_id+1}_{category}.json'))
         jobs.append(p)
         p.start()
@@ -197,9 +205,18 @@ def ShareWork(box_id, category, number_process):
             else:
                 j = j + 1
 
+    #close file
+    with open(f'vn_{box_id+1}_{category}.json', 'a') as f:
+        f.write(']')
+
+
 
 #10.848689129464779, 106.6573182438044, 10.851470907404817, 106.66425980073494
-# Crawljson_x(0, 12, 106.6573182438044, 10.848689129464779,
-#           106.66425980073494, 10.851470907404817, 'test.json')
 
-ShareWork(int(sys.argv[1]), int(sys.argv[2]), 2)
+# CrawlJson(0, 12, 106.547082, 10.705989,
+#           106.799978, 10.910806, 'hcm_12.json')
+
+if len(sys.argv) == 4:
+    ShareWork(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+else:
+    ShareWork(int(sys.argv[1]), int(sys.argv[2]), 2)
