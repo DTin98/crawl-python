@@ -21,9 +21,9 @@ git clone https://github.com/DTin98/crawl-python.git && cd crawl-python
 
 ## Run
 - Windowns:
-python3 crawl.py BOX CATEGORY
+`python3 crawl.py BOX CATEGORY`
 - Ubuntu:
-vd: screen python3 crawl.py 8 12
+`screen python3 crawl.py BOX CATEGORY`
 Then Hold Ctrl and press a and press d
 
 screen commands:
