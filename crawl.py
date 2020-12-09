@@ -56,13 +56,17 @@ def CrawlJson(process_id, category, x1, y1, x2, y2, filename):
                 try:
                     response = requests.get(
                         f"https://map.coccoc.com/map/search.json?category={category}&borders={e['y1']},{e['x1']},{e['y2']},{e['x2']}")  # REMEMBER TO REVERT X & Y
-                except requests.exceptions.RequestException as err:
-                    print(err)
 
-                if response.text[18] != ']':
-                    with open(filename, 'a') as f:
-                        s = json.loads(response.text)['result']['poi']
-                        f.write(json.dumps(s) + ',')
+                    if response.text[18] != ']':
+                        with open(filename, 'a') as f:
+                            s = json.loads(response.text)['result']['poi']
+                            f.write(json.dumps(s) + ',')
+                except requests.exceptions.RequestException as err:
+                    with open(f'log/{filename}_{process_id}.log', 'w') as f:
+                        f.write(str({'e': e, 'times': times, 'total_time': total_times,
+                                     'percent': times*100/total_times, 'error': {'err': err}}))
+                except:
+                    pass
 
                 # logfile
                 with open(f'log/{filename}_{process_id}.log', 'w') as f:
