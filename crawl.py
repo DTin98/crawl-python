@@ -62,10 +62,7 @@ def CrawlJson(process_id, category, x1, y1, x2, y2, filename):
                 if response.text[18] != ']':
                     with open(filename, 'a') as f:
                         s = json.loads(response.text)['result']['poi']
-                        if (times + 1 < total_times):
-                            f.write(json.dumps(s) + ',')
-                        else:
-                            f.write(json.dumps(s))
+                        f.write(json.dumps(s) + ',')
 
                 # logfile
                 with open(f'log/{filename}_{process_id}.log', 'w') as f:
@@ -164,7 +161,7 @@ def ShareWork(box_id, category, number_process):
           [0], 'x2': start_frames[box_id][1] + DISTANT_ELEMENT_X, 'y2': start_frames[box_id][0] + DISTANT_ELEMENT_Y}]
     jobs = []
 
-    #create file
+    # create file
     with open(f'vn_{box_id+1}_{category}.json', 'a') as f:
         f.write('[')
 
@@ -205,17 +202,15 @@ def ShareWork(box_id, category, number_process):
             else:
                 j = j + 1
 
-    #close file
+    # close file
     with open(f'vn_{box_id+1}_{category}.json', 'a') as f:
         f.write(']')
-
 
 
 #10.848689129464779, 106.6573182438044, 10.851470907404817, 106.66425980073494
 
 # CrawlJson(0, 12, 106.547082, 10.705989,
 #           106.799978, 10.910806, 'hcm_12.json')
-
 if len(sys.argv) == 4:
     ShareWork(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
 else:
