@@ -21,9 +21,9 @@ git clone https://github.com/DTin98/crawl-python.git && cd crawl-python
 
 ## Run
 - Windowns:
-`python3 crawl.py BOX CATEGORY`
+`python3 crawl.py BOX CATEGORY NUMBER_PROCESS`
 - Ubuntu:
-`screen python3 crawl.py BOX CATEGORY`
+`screen python3 crawl.py BOX CATEGORY NUMBER_PROCESS`
 Then Hold Ctrl and press a and press d
 
 ## screen commands:
