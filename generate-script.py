@@ -20,11 +20,11 @@ with open('script.txt', 'a') as f:
         f.write(f"#VPS{i+1}:\nscreen -dm '{vps[i]}'\n\n")
         for j in range(0, len(vps[i])):
             try:
-                f.write(f"python3 crawl.py {vps[i][j][0]} {vps[i][j][1]} 3; ")
+                f.write(
+                    f"python3 crawl.py {vps[i][j][0]} {vps[i][j][1]} 3 && ./script.sh; ")
             except:
                 print('vps[i][j][0]: ', vps[i][j][0])
                 print('j: ', j)
                 print('i: ', i)
 
-        f.write(
-            f'git pull && git add . && git commit -m "{vps[i]}" && git push\n\n')
+        f.write('\n')
