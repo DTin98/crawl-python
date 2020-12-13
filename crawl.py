@@ -199,13 +199,6 @@ def ShareWork(box_id, category, number_process):
         if jobs_check == number_process-1:
             is_process_alive = False
 
-        j = 0
-        for i in range(0, number_process):
-            if (jobs[j].is_alive()):
-                print(f'{percent[j]} %', end='\r', flush=True)
-            else:
-                j = j + 1
-
     # close file
     with open(f'vn_{box_id+1}_{category}.json', 'a') as f:
         f.write(']')
